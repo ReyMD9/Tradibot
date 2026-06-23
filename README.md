@@ -1,4 +1,4 @@
-#Tradibot
+# Tradibot
 
 Un motor de trading algorítmico de alta frecuencia construido en Python. Diseñado para detectar explosiones de *momentum* en el mercado de valores en tiempo real y ejecutar operaciones automatizadas utilizando la API de Alpaca.
 

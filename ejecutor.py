@@ -3,19 +3,17 @@ import os
 from dotenv import load_dotenv
 from alpaca_trade_api.rest import REST
 
-# Cargamos llaves
 load_dotenv()
 API_KEY = os.getenv('ALPACA_API_KEY')
 SECRET_KEY = os.getenv('ALPACA_SECRET_KEY')
 
 # Iniciamos el cliente REST
 api_rest = REST(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets')
-
+print("By ReyMD9")
 def ejecutar_bracket_order(simbolo, precio_actual, cantidad=1):
     try:
         print(f" Preparando Bracket Order para {simbolo}...")
         
-        # Matemáticas de riesgo (1% de Take Profit, 0.5% de Stop Loss)
         precio_sl = precio_actual * 0.995
         precio_tp = precio_actual * 1.010
         

@@ -6,13 +6,11 @@ load_dotenv()
 API_KEY = os.getenv('ALPACA_API_KEY')
 SECRET_KEY = os.getenv('ALPACA_SECRET_KEY')
 
-# Validamos rápido si la memoria cargó la llave (imprime solo los primeros 4 caracteres por seguridad)
 if not API_KEY:
     print("⚠️ ALERTA: No se cargó la API_KEY. Revisa tu archivo .env")
 else:
     print(f"🔑 Llave detectada: {API_KEY[:4]}... cargada en memoria.")
 
-# LA CORRECCIÓN: Agregamos ?feed=iex al final de la URL
 url_datos = "https://data.alpaca.markets/v2/stocks/SPY/trades/latest?feed=iex"
 
 headers = {

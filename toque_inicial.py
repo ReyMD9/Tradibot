@@ -1,8 +1,11 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-# Reemplaza esto con tus llaves reales recién generadas
-API_KEY = "PK73MCL5DWUEEIXOSTSNQWCBDL"
-SECRET_KEY = "8DVswmrAiGkKgkh1r6hvToGk9BfxNUbGbvRAumVhmF4f"
+
+load_dotenv()
+API_KEY = os.getenv('ALPACA_API_KEY')
+SECRET_KEY = os.getenv('ALPACA_SECRET_KEY')
 
 url = "https://paper-api.alpaca.markets/v2/account"
 headers = {

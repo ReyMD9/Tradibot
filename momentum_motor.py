@@ -12,7 +12,7 @@ API_KEY = os.getenv('ALPACA_API_KEY')
 SECRET_KEY = os.getenv('ALPACA_SECRET_KEY')
 
 memoria_precio = deque(maxlen=3)
-conn = Stream(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets', data_feed='crypto')
+conn = Stream(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets', data_feed='iex')
 
 async def analizar_mercado(barra):
     simbolo = barra.symbol
@@ -39,7 +39,7 @@ async def analizar_mercado(barra):
 
 def iniciar_radar():
     print("📡 Levantando radar de Momentum (Esperando datos en vivo)...")
-    conn.subscribe_bars(analizar_mercado, 'BTC/USD', 'ETH/USD')
+    conn.subscribe_bars(analizar_mercado, 'SPY', 'AAPL')
     try:
         conn.run()
     except KeyboardInterrupt:

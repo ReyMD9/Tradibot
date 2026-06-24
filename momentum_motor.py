@@ -16,7 +16,10 @@ load_dotenv()
 API_KEY = os.getenv('ALPACA_API_KEY')
 SECRET_KEY = os.getenv('ALPACA_SECRET_KEY')
 
-memoria_precio = deque(maxlen=3)
+memoria_precio = {
+    'SPY': deque(maxlen=3),
+    'AAPL': deque(maxlen=3)
+}
 conn = Stream(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets', data_feed='iex')
 
 async def analizar_mercado(barra):

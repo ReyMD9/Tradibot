@@ -16,32 +16,36 @@ load_dotenv()
 API_KEY = os.getenv('ALPACA_API_KEY')
 SECRET_KEY = os.getenv('ALPACA_SECRET_KEY')
 
+conn = Stream(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets', data_feed='iex')
+
+# 1. Definimos el diccionario con un deque separado para cada activo
 memoria_precio = {
     'SPY': deque(maxlen=3),
     'AAPL': deque(maxlen=3)
 }
-conn = Stream(API_KEY, SECRET_KEY, base_url='https://paper-api.alpaca.markets', data_feed='iex')
 
 async def analizar_mercado(barra):
     simbolo = barra.symbol
     precio_actual = barra.close
     volumen_actual = barra.volume
     
-    memoria_precio.append({'precio': precio_actual, 'volumen': volumen_actual})
+    # 2. EL ARREGLO: Accedemos al deque específico del símbolo usando [simbolo]
+    memoria_precio[simbolo].append({'precio': precio_actual, 'volumen': volumen_actual})
     print(f"[{simbolo}] Precio: ${precio_actual:.2f} | Vol: {volumen_actual}")
     
-    if len(memoria_precio) >= 2:
-        vela_anterior = memoria_precio[-2]
-        vela_actual = memoria_precio[-1]
+    # 3. Verificamos que ESE símbolo específico tenga al menos 2 velas en su memoria
+    if len(memoria_precio[simbolo]) >= 2:
+        vela_anterior = memoria_precio[simbolo][-2]
+        vela_actual = memoria_precio[simbolo][-1]
         
         cambio_precio = ((vela_actual['precio'] - vela_anterior['precio']) / vela_anterior['precio']) * 100
         
-        if cambio_precio > -100:
+        # 4. ARREGLO DEL GATILLO: Cambiamos -100 por un momentum real
+        if cambio_precio > 0.5:
             print("="*50)
-            print("¡MOMENTUM ALCISTA DETECTADO!")
+            print(f"¡MOMENTUM ALCISTA DETECTADO EN {simbolo}! Subida: {cambio_precio:.2f}%")
             
-            # >>> EL DISPARO REAL <<<
-            # Llamamos a la función que trajimos del otro archivo
+            # El disparo real
             ejecutar_bracket_order(simbolo, precio_actual)
             
             print("="*50)
